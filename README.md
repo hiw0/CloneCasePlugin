@@ -1,61 +1,48 @@
 # CloneCasePlugin
 
-Microsoft Dynamics 365 / Dataverse plugin for cloning Case (Incident) records.
+A Dynamics 365 / Dataverse plugin that clones a Case (Incident) record. Triggered from a Custom Action, it copies all fields from the source incident except IDs and audit/status fields, then returns the new record's GUID.
 
-This repository demonstrates backend customization and workflow automation within the Dynamics 365 ecosystem using C# plugins and Dataverse actions.
+## What it does
 
-## Overview
+- Receives an `EntityReference` to an existing `incident` as `Target`.
+- Retrieves the full record.
+- Creates a new `incident` copying every attribute except: `incidentid`, `createdon`, `modifiedon`, `createdby`, `modifiedby`, `ownerid`, `statecode`, `statuscode`, `ticketnumber`.
+- Sets the new record to active (`statecode=0`, `statuscode=1`).
+- Returns the new GUID as `ClonedCaseId` (output parameter).
 
-The plugin is designed to automate duplication of support/service cases while preserving important business context.
+## Build
 
-Typical use cases:
+Open `CloneCasePlugin.csproj` in Visual Studio. Targets .NET Framework 4.6.2 and references the Dataverse SDK v9 via `packages.config`.
 
-- recurring support workflows
-- escalation handling
-- templated case creation
-- operational efficiency improvements
-
-## Technical focus
-
-- Dynamics 365 CE / Dataverse
-- C# plugin development
-- Custom Actions
-- Entity operations
-- CRM workflow automation
-- Secure server-side execution
-
-## Engineering concepts demonstrated
-
-- Plugin registration and execution pipelines
-- Dataverse entity manipulation
-- Server-side business logic
-- Separation of UI actions from backend execution
-- CRM automation architecture
-
-## Example flow
-
-```mermaid
-flowchart LR
-    A[User clicks Clone Case] --> B[Custom Action]
-    B --> C[C# Plugin Execution]
-    C --> D[Read Existing Incident]
-    D --> E[Create New Incident]
-    E --> F[Return New Record ID]
+```
+msbuild CloneCasePlugin.csproj /p:Configuration=Release
 ```
 
-## Why this project matters
+## Register
 
-This project demonstrates practical enterprise software engineering beyond simple CRUD applications:
+1. Open the **Plugin Registration Tool** (part of the Power Platform SDK).
+2. Connect to your environment and register the built assembly (`bin\Release\CloneCasePlugin.dll`).
+3. Create a **Custom Action** on the `incident` entity with an input parameter `Target` (`EntityReference`) and an output parameter `ClonedCaseId` (`Guid`).
+4. Bind a new step on the custom action to `CloneCasePlugin.CloneCasePlugin`.
 
-- integrating with large business platforms
-- extending enterprise systems safely
-- designing automation workflows
-- building backend business logic in production-style environments
+## Calling it
 
-## Future improvements
+From a form ribbon button, JavaScript:
 
-- selective field-copy configuration
-- attachment cloning
-- audit logging
-- async processing support
-- configurable cloning templates
+```javascript
+Xrm.WebApi.execute({
+  getMetadata: () => ({
+    boundParameter: null,
+    operationType: 0,
+    operationName: "new_CloneIncident",
+    parameterTypes: {
+      Target: { typeName: "mscrm.incident", structuralProperty: 5 },
+    },
+  }),
+  Target: { entityType: "incident", id: incidentId },
+});
+```
+
+## Notes
+
+- `Pluginkey.snk` is the strong-name signing key. Replace it for any forked or production use.
