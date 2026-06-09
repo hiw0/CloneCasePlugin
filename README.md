@@ -43,6 +43,11 @@ Xrm.WebApi.execute({
 });
 ```
 
+## Limitations
+
+- Fields are copied via `ColumnSet(true)` with a fixed denylist, so any new custom column gets copied automatically. For production use, prefer an explicit allowlist or a configurable field mapping.
+- Only the `incident` row itself is cloned. Related records (notes/attachments, activities, connections) are not.
+
 ## Notes
 
 - `Pluginkey.snk` is the strong-name signing key. Replace it for any forked or production use.
