@@ -12,7 +12,7 @@ A Dynamics 365 / Dataverse plugin that clones a Case (Incident) record. Triggere
 
 ## Build
 
-Open `CloneCasePlugin.csproj` in Visual Studio. Targets .NET Framework 4.6.2 and references the Dataverse SDK v9 via `packages.config`.
+Open `CloneCasePlugin.csproj` in Visual Studio. Targets .NET Framework 4.7.1 and references the Dataverse SDK v9 via `packages.config`.
 
 ```
 msbuild CloneCasePlugin.csproj /p:Configuration=Release

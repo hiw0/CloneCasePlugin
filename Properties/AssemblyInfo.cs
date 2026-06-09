@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("CloneCasePlugin")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("ReviOS 11 24.06")]
+[assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("CloneCasePlugin")]
-[assembly: AssemblyCopyright("Copyright © ReviOS 11 24.06 2025")]
+[assembly: AssemblyCopyright("Copyright © 2025")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
