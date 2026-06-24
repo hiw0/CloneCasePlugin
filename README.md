@@ -18,6 +18,14 @@ Open `CloneCasePlugin.csproj` in Visual Studio. Targets .NET Framework 4.7.1 and
 msbuild CloneCasePlugin.csproj /p:Configuration=Release
 ```
 
+## Tests
+
+The mocked service tests cover missing/invalid targets, the wrong logical name, successful cloning, excluded fields, and the `ClonedCaseId` output contract. Run them from a Visual Studio Developer Command Prompt with the .NET Framework 4.7.1 targeting pack installed:
+
+```powershell
+dotnet test CloneCasePlugin.Tests\CloneCasePlugin.Tests.csproj
+```
+
 ## Register
 
 1. Open the **Plugin Registration Tool** (part of the Power Platform SDK).
